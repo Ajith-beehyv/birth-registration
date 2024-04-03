@@ -1,16 +1,14 @@
 package digit.web.models;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Data;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.constraints.Size;
 
 /**
  * This object holds list of documents attached during the transaciton for a property
@@ -22,26 +20,24 @@ import lombok.Builder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Document   {
-        @JsonProperty("id")
+public class Document {
 
-        @Size(max=64)         private String id = null;
+    @JsonProperty("id")
+    @Size(max = 64)
+    private String id = null;
 
-        @JsonProperty("documentType")
+    @JsonProperty("documentType")
+    private String documentType = null;
 
-                private String documentType = null;
+    @JsonProperty("fileStore")
+    private String fileStore = null;
 
-        @JsonProperty("fileStore")
+    @JsonProperty("documentUid")
+    @Size(max = 64)
+    private String documentUid = null;
 
-                private String fileStore = null;
-
-        @JsonProperty("documentUid")
-
-        @Size(max=64)         private String documentUid = null;
-
-        @JsonProperty("additionalDetails")
-
-                private Object additionalDetails = null;
+    @JsonProperty("additionalDetails")
+    private Object additionalDetails = null;
 
 
 }

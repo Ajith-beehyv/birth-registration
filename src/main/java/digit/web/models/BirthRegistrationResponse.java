@@ -1,20 +1,16 @@
 package digit.web.models;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import digit.web.models.BirthRegistrationApplication;
-import digit.web.models.ResponseInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Data;
-import lombok.Builder;
 
 /**
  * Contract class to send response. Array of  items are used in case of search results or response for create, whereas single  item is used for update
@@ -26,23 +22,23 @@ import lombok.Builder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BirthRegistrationResponse   {
-        @JsonProperty("ResponseInfo")
+public class BirthRegistrationResponse {
 
-          @Valid
-                private ResponseInfo responseInfo = null;
+    @JsonProperty("ResponseInfo")
+    @Valid
+    private ResponseInfo responseInfo = null;
 
-        @JsonProperty("BirthRegistrationApplications")
-          @Valid
-                private List<BirthRegistrationApplication> birthRegistrationApplications = null;
+    @JsonProperty("BirthRegistrationApplications")
+    @Valid
+    private List<BirthRegistrationApplication> birthRegistrationApplications = null;
 
 
-        public BirthRegistrationResponse addBirthRegistrationApplicationsItem(BirthRegistrationApplication birthRegistrationApplicationsItem) {
-            if (this.birthRegistrationApplications == null) {
+    public BirthRegistrationResponse addBirthRegistrationApplicationsItem(BirthRegistrationApplication birthRegistrationApplicationsItem) {
+        if (this.birthRegistrationApplications == null) {
             this.birthRegistrationApplications = new ArrayList<>();
-            }
+        }
         this.birthRegistrationApplications.add(birthRegistrationApplicationsItem);
         return this;
-        }
+    }
 
 }

@@ -1,18 +1,16 @@
 package digit.web.models;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import digit.web.models.Address;
-import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.UUID;
-import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Data;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.validation.annotation.Validated;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.UUID;
 
 /**
  * BirthApplicationAddress
@@ -23,25 +21,23 @@ import lombok.Builder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BirthApplicationAddress   {
-        @JsonProperty("id")
+public class BirthApplicationAddress {
 
-          @Valid
-                private UUID id = null;
+    @JsonProperty("id")
+    @Valid
+    private UUID id = null;
 
-        @JsonProperty("tenantId")
-          @NotNull
+    @JsonProperty("tenantId")
+    @NotNull
+    @Size(min = 2, max = 64)
+    private String tenantId = null;
 
-        @Size(min=2,max=64)         private String tenantId = null;
+    @JsonProperty("applicationNumber")
+    private String applicationNumber = null;
 
-        @JsonProperty("applicationNumber")
-
-                private String applicationNumber = null;
-
-        @JsonProperty("applicantAddress")
-
-          @Valid
-                private Address applicantAddress = null;
+    @JsonProperty("applicantAddress")
+    @Valid
+    private Address applicantAddress = null;
 
 
 }
