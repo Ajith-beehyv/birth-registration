@@ -20,9 +20,9 @@ serviceMaps:
 
             - jsonPath: $.BirthRegistrationApplications.*.babyLastName
 
-            - jsonPath: $.BirthRegistrationApplications.*.fatherOfApplicant.id
+            - jsonPath: $.BirthRegistrationApplications.*.father.id
 
-            - jsonPath: $.BirthRegistrationApplications.*.motherOfApplicant.id
+            - jsonPath: $.BirthRegistrationApplications.*.mother.id
 
             - jsonPath: $.BirthRegistrationApplications.*.doctorName
 
@@ -40,52 +40,47 @@ serviceMaps:
 
             - jsonPath: $.BirthRegistrationApplications.*.auditDetails.lastModifiedTime
 
-        - query: INSERT INTO eg_bt_address(id, tenantid, doorno, latitude, longitude, buildingname, addressid, addressnumber, type, addressline1, addressline2, landmark, street, city, locality, pincode, detail, registrationid, createdby, lastmodifiedby, createdtime, lastmodifiedtime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        - query: INSERT INTO eg_bt_address(id, tenantid, applicationnumber) VALUES (?, ?, ?);
           basePath: BirthRegistrationApplications.*
           jsonMaps:
             - jsonPath: $.BirthRegistrationApplications.*.address.id
 
             - jsonPath: $.BirthRegistrationApplications.*.address.tenantId
 
-            - jsonPath: $.BirthRegistrationApplications.*.address.doorNo
+            - jsonPath: $.BirthRegistrationApplications.*.address.applicationNumber
 
-            - jsonPath: $.BirthRegistrationApplications.*.address.latitude
+        - query: INSERT INTO eg_bt_address(tenantid, latitude, longitude, buildingname, addressid, addressnumber, addressline1, addressline2, city, pincode, detail, createdby, lastmodifiedby, createdtime, lastmodifiedtime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+          basePath: BirthRegistrationApplications.*
+          jsonMaps:
+            - jsonPath: $.BirthRegistrationApplications.*.address.applicantAddress.tenantId
 
-            - jsonPath: $.BirthRegistrationApplications.*.address.longitude
+            - jsonPath: $.BirthRegistrationApplications.*.applicantAddress.address.latitude
 
-            - jsonPath: $.BirthRegistrationApplications.*.address.buildingName
+            - jsonPath: $.BirthRegistrationApplications.*.address.applicantAddress.longitude
 
-            - jsonPath: $.BirthRegistrationApplications.*.address.addressId
+            - jsonPath: $.BirthRegistrationApplications.*.address.applicantAddress.buildingName
 
-            - jsonPath: $.BirthRegistrationApplications.*.address.addressNumber
+            - jsonPath: $.BirthRegistrationApplications.*.address.applicantAddress.addressId
 
-            - jsonPath: $.BirthRegistrationApplications.*.address.type
+            - jsonPath: $.BirthRegistrationApplications.*.address.applicantAddress.addressNumber
 
-            - jsonPath: $.BirthRegistrationApplications.*.address.addressLine1
+            - jsonPath: $.BirthRegistrationApplications.*.address.applicantAddress.addressLine1
 
-            - jsonPath: $.BirthRegistrationApplications.*.address.addressLine2
+            - jsonPath: $.BirthRegistrationApplications.*.address.applicantAddress.addressLine2
 
-            - jsonPath: $.BirthRegistrationApplications.*.address.landmark
+            - jsonPath: $.BirthRegistrationApplications.*.address.applicantAddress.city
 
-            - jsonPath: $.BirthRegistrationApplications.*.address.street
+            - jsonPath: $.BirthRegistrationApplications.*.address.applicantAddress.pincode
 
-            - jsonPath: $.BirthRegistrationApplications.*.address.city
+            - jsonPath: $.BirthRegistrationApplications.*.address.applicantAddress.detail
 
-            - jsonPath: $.BirthRegistrationApplications.*.address.locality.name
+            - jsonPath: $.BirthRegistrationApplications.*.address.applicantAddress.createdBy
 
-            - jsonPath: $.BirthRegistrationApplications.*.address.pincode
+            - jsonPath: $.BirthRegistrationApplications.*.address.applicantAddress.lastModifiedBy
 
-            - jsonPath: $.BirthRegistrationApplications.*.address.detail
+            - jsonPath: $.BirthRegistrationApplications.*.address.applicantAddress.createdTime
 
-            - jsonPath: $.BirthRegistrationApplications.*.id
-
-            - jsonPath: $.BirthRegistrationApplications.*.address.createdBy
-
-            - jsonPath: $.BirthRegistrationApplications.*.address.lastModifiedBy
-
-            - jsonPath: $.BirthRegistrationApplications.*.address.createdTime
-
-            - jsonPath: $.BirthRegistrationApplications.*.address.lastModifiedTime
+            - jsonPath: $.BirthRegistrationApplications.*.address.applicantAddress.lastModifiedTime
 
     - version: 1.0
       description: Update birth registration applications in table
