@@ -30,21 +30,21 @@ public class UserService {
     public void callUserService(BirthRegistrationRequest request) {
         request.getBirthRegistrationApplications().forEach(application -> {
             String tenantId = application.getTenantId();
-            if (application.getFather().getUserName() != null) {
-                application.getFather().setUuid(upsertUser(tenantId, application.getFather(), request.getRequestInfo()));
+            if (application.getFather() != null) {
+                application.getFather().setUuid(upsertUser(application.getFather(), request.getRequestInfo()));
             }
-            if (application.getFather().getUserName() != null) {
-                application.getMother().setUuid(upsertUser(tenantId, application.getMother(), request.getRequestInfo()));
+            if (application.getFather() != null) {
+                application.getMother().setUuid(upsertUser(application.getMother(), request.getRequestInfo()));
             }
         });
     }
 
-    private String upsertUser(String tenantId, User user, RequestInfo requestInfo){
+    private String upsertUser(User user, RequestInfo requestInfo){
 
         User userServiceResponse = null;
 
         // Search using name, mobile number and user name
-        UserDetailResponse userDetailResponse = searchUser(getStateLevelTenant(tenantId), user);
+        UserDetailResponse userDetailResponse = searchUser(getStateLevelTenant(user.getTenantId()), user);
         if (userDetailResponse != null && !userDetailResponse.getUser().isEmpty()) {
             User userFromSearch = userDetailResponse.getUser().get(0);
             log.info(userFromSearch.toString());
@@ -54,7 +54,7 @@ public class UserService {
                 userServiceResponse = userDetailResponse.getUser().get(0);
             }
         } else {
-            userServiceResponse = createUser(requestInfo,tenantId,user);
+            userServiceResponse = createUser(requestInfo, user);
         }
 
         return userServiceResponse.getUuid();
@@ -89,9 +89,9 @@ public class UserService {
         return userUtil.userCall(userSearchRequest,uri);
     }
 
-    private User createUser(RequestInfo requestInfo,String tenantId, User userInfo) {
+    private User createUser(RequestInfo requestInfo,User userInfo) {
 
-        userUtil.addUserDefaultFields(userInfo.getMobileNumber(),tenantId, userInfo);
+        userUtil.addUserDefaultFields(userInfo.getMobileNumber(), userInfo.getTenantId(), userInfo);
         StringBuilder uri = new StringBuilder(config.getUserHost())
                 .append(config.getUserContextPath())
                 .append(config.getUserCreateEndpoint());

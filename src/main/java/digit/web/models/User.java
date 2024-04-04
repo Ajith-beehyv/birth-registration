@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -149,11 +150,11 @@ public class User {
 
     @JsonProperty("createdDate")
     @Valid
-    private LocalDate createdDate = null;
+    private Date createdDate = null;
 
     @JsonProperty("lastModifiedDate")
     @Valid
-    private LocalDate lastModifiedDate = null;
+    private Date lastModifiedDate = null;
 
     @JsonProperty("dob")
     private Long dob = null;

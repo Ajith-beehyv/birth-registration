@@ -39,11 +39,7 @@ public class UserUtil {
      */
 
     public UserDetailResponse userCall(Object userRequest, StringBuilder uri) {
-        String dobFormat = null;
-        if(uri.toString().contains(config.getUserSearchEndpoint())  || uri.toString().contains(config.getUserUpdateEndpoint()))
-            dobFormat=DOB_FORMAT_Y_M_D;
-        else if(uri.toString().contains(config.getUserCreateEndpoint()))
-            dobFormat = DOB_FORMAT_D_M_Y;
+        String dobFormat = DOB_FORMAT_D_M_Y_H_M_S;
         try{
             LinkedHashMap responseMap = (LinkedHashMap)serviceRequestRepository.fetchResult(uri, userRequest);
             parseResponse(responseMap,dobFormat);
@@ -66,9 +62,9 @@ public class UserUtil {
         String format1 = DOB_FORMAT_D_M_Y_H_M_S;
         if(users!=null){
             users.forEach( map -> {
-                        map.put(CREATED_DATE,dateTolong((String)map.get(CREATED_DATE),format1));
+                        map.put(CREATED_DATE, convertToDate((String)map.get(CREATED_DATE),format1));
                         if((String)map.get(LAST_MODIFIED_DATE)!=null)
-                            map.put(LAST_MODIFIED_DATE,dateTolong((String)map.get(LAST_MODIFIED_DATE),format1));
+                            map.put(LAST_MODIFIED_DATE, convertToDate((String)map.get(LAST_MODIFIED_DATE),format1));
                         if((String)map.get(DOB)!=null)
                             map.put(DOB,dateTolong((String)map.get(DOB),dobFormat));
                         if((String)map.get(PWD_EXPIRY_DATE)!=null)
@@ -76,6 +72,23 @@ public class UserUtil {
                     }
             );
         }
+    }
+
+    /**
+     * Converts string to date
+     * @param date date to be parsed
+     * @param format Format of the date
+     * @return Long value of date
+     */
+    private Date convertToDate(String date, String format){
+        SimpleDateFormat f = new SimpleDateFormat(format);
+        Date d = null;
+        try {
+            d = f.parse(date);
+        } catch (ParseException e) {
+            throw new CustomException(INVALID_DATE_FORMAT_CODE,INVALID_DATE_FORMAT_MESSAGE);
+        }
+        return d;
     }
 
     /**

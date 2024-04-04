@@ -24,7 +24,6 @@ import javax.validation.constraints.Size;
 public class Role {
 
     @JsonProperty("tenantId")
-    @NotNull
     private String tenantId = null;
 
     @JsonProperty("id")
@@ -33,6 +32,10 @@ public class Role {
     @JsonProperty("name")
     @Size(max = 64)
     private String name = null;
+
+    @JsonProperty("code")
+    @Size(max = 64)
+    private String code = null;
 
     @JsonProperty("description")
     private String description = null;

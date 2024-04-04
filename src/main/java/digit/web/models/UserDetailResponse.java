@@ -16,6 +16,6 @@ public class UserDetailResponse {
     @JsonProperty("responseInfo")
     ResponseInfo responseInfo;
 
-    @JsonProperty("responseInfo")
+    @JsonProperty("user")
     List<User> user;
 }
