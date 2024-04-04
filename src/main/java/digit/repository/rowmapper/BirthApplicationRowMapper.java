@@ -1,13 +1,17 @@
 package digit.repository.rowmapper;
 
 import digit.web.models.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+@Component
+@Slf4j
 public class BirthApplicationRowMapper implements ResultSetExtractor<List<BirthRegistrationApplication>>  {
 
 
@@ -15,7 +19,7 @@ public class BirthApplicationRowMapper implements ResultSetExtractor<List<BirthR
     public List<BirthRegistrationApplication> extractData(ResultSet resultSet) throws SQLException, DataAccessException {
         Map<String,BirthRegistrationApplication> birthRegistrationApplicationMap = new LinkedHashMap<>();
         while (resultSet.next()){
-            String uuid = resultSet.getString("bapplicationnumber");
+            String uuid = resultSet.getString("registration_id");
             BirthRegistrationApplication birthRegistrationApplication = birthRegistrationApplicationMap.get(uuid);
 
             if(birthRegistrationApplication == null) {

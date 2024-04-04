@@ -13,7 +13,7 @@ CREATE TABLE eg_bt_registration(
   createdby varchar(64),
   lastmodifiedby varchar(64),
   createdtime bigint,
-  lastmodifiedtime bigint,
+  lastmodifiedtime bigint
 );
  
  
