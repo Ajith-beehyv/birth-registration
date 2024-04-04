@@ -1,13 +1,12 @@
 package digit.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import digit.config.Configuration;
+
 import static digit.config.ServiceConstants.*;
-import digit.models.coremodels.user.Role;
-import digit.models.coremodels.user.User;
-import digit.models.coremodels.user.enums.UserType;
+
+import digit.config.Configuration;
 import digit.repository.ServiceRequestRepository;
-import digit.models.coremodels.UserDetailResponse;
+import digit.web.models.*;
 import org.egov.tracer.model.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -19,20 +18,17 @@ import java.util.*;
 @Component
 public class UserUtil {
 
-    @Autowired
     private ObjectMapper mapper;
 
-    @Autowired
     private ServiceRequestRepository serviceRequestRepository;
 
-    @Autowired
-    private Configuration configs;
-
+    private Configuration config;
 
     @Autowired
-    public UserUtil(ObjectMapper mapper, ServiceRequestRepository serviceRequestRepository) {
+    public UserUtil(ObjectMapper mapper, ServiceRequestRepository serviceRequestRepository, Configuration config) {
         this.mapper = mapper;
         this.serviceRequestRepository = serviceRequestRepository;
+        this.config = config;
     }
 
     /**
@@ -44,9 +40,9 @@ public class UserUtil {
 
     public UserDetailResponse userCall(Object userRequest, StringBuilder uri) {
         String dobFormat = null;
-        if(uri.toString().contains(configs.getUserSearchEndpoint())  || uri.toString().contains(configs.getUserUpdateEndpoint()))
+        if(uri.toString().contains(config.getUserSearchEndpoint())  || uri.toString().contains(config.getUserUpdateEndpoint()))
             dobFormat=DOB_FORMAT_Y_M_D;
-        else if(uri.toString().contains(configs.getUserCreateEndpoint()))
+        else if(uri.toString().contains(config.getUserCreateEndpoint()))
             dobFormat = DOB_FORMAT_D_M_Y;
         try{
             LinkedHashMap responseMap = (LinkedHashMap)serviceRequestRepository.fetchResult(uri, userRequest);
@@ -54,8 +50,7 @@ public class UserUtil {
             UserDetailResponse userDetailResponse = mapper.convertValue(responseMap,UserDetailResponse.class);
             return userDetailResponse;
         }
-        catch(IllegalArgumentException  e)
-        {
+        catch(IllegalArgumentException  e) {
             throw new CustomException(ILLEGAL_ARGUMENT_EXCEPTION_CODE,OBJECTMAPPER_UNABLE_TO_CONVERT);
         }
     }
@@ -107,11 +102,10 @@ public class UserUtil {
      * @param tenantId
      * @param userInfo
      */
-    public void addUserDefaultFields(String mobileNumber,String tenantId, User userInfo, UserType userType){
+    public void addUserDefaultFields(String mobileNumber, String tenantId, User userInfo){
         Role role = getCitizenRole(tenantId);
-        userInfo.setRoles(Collections.singleton(role));
-        userInfo.setType(userType);
-        userInfo.setUsername(mobileNumber);
+        userInfo.setRoles(Collections.singletonList(role));
+        userInfo.setMobileNumber(mobileNumber);
         userInfo.setTenantId(getStateLevelTenant(tenantId));
         userInfo.setActive(true);
     }
@@ -121,9 +115,9 @@ public class UserUtil {
      * @param tenantId
      * @return
      */
-    private Role getCitizenRole(String tenantId){
+    private Role getCitizenRole(String tenantId) {
         Role role = Role.builder().build();
-        role.setCode(CITIZEN_UPPER);
+        role.setDescription(CITIZEN_UPPER);
         role.setName(CITIZEN_LOWER);
         role.setTenantId(getStateLevelTenant(tenantId));
         return role;

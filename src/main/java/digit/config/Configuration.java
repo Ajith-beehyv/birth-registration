@@ -22,6 +22,22 @@ import java.util.TimeZone;
 @Getter
 public class Configuration {
 
+    // BTR Variables
+
+    @Value("${btr.kafka.create.topic}")
+    private String createTopic;
+
+    @Value("${btr.kafka.update.topic}")
+    private String updateTopic;
+
+    @Value("${btr.default.offset}")
+    private Integer defaultOffset;
+
+    @Value("${btr.default.limit}")
+    private Integer defaultLimit;
+
+    @Value("${btr.search.max.limit}")
+    private Integer maxLimit;
 
     // User Config
     @Value("${egov.user.host}")
@@ -69,24 +85,4 @@ public class Configuration {
     @Value("${egov.mdms.search.endpoint}")
     private String mdmsEndPoint;
 
-
-    //HRMS
-    @Value("${egov.hrms.host}")
-    private String hrmsHost;
-
-    @Value("${egov.hrms.search.endpoint}")
-    private String hrmsEndPoint;
-
-
-    //URLShortening
-    @Value("${egov.url.shortner.host}")
-    private String urlShortnerHost;
-
-    @Value("${egov.url.shortner.endpoint}")
-    private String urlShortnerEndpoint;
-
-
-    //SMSNotification
-    @Value("${egov.sms.notification.topic}")
-    private String smsNotificationTopic;
 }

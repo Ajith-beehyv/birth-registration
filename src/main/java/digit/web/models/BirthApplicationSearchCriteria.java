@@ -35,7 +35,7 @@ public class BirthApplicationSearchCriteria {
     private List<String> ids = null;
 
     @JsonProperty("applicationNumber")
-    @Size(min = 2, max = 64)
+    @Size(max = 64)
     private String applicationNumber = null;
 
 

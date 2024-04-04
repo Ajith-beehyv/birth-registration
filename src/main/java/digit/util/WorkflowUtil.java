@@ -25,8 +25,7 @@ public class WorkflowUtil {
     private ObjectMapper mapper;
 
     @Autowired
-    private Configuration configs;
-
+    private Configuration config;
 
 
     /**
@@ -83,8 +82,8 @@ public class WorkflowUtil {
     * @return
     */
     private StringBuilder getSearchURLWithParams(String tenantId, String businessService) {
-        StringBuilder url = new StringBuilder(configs.getWfHost());
-        url.append(configs.getWfBusinessServiceSearchPath());
+        StringBuilder url = new StringBuilder(config.getWfHost());
+        url.append(config.getWfBusinessServiceSearchPath());
         url.append(TENANTID);
         url.append(tenantId);
         url.append(BUSINESS_SERVICES);
@@ -165,7 +164,7 @@ public class WorkflowUtil {
     */
     private State callWorkFlow(ProcessInstanceRequest workflowReq) {
         ProcessInstanceResponse response = null;
-        StringBuilder url = new StringBuilder(configs.getWfHost().concat(configs.getWfTransitionPath()));
+        StringBuilder url = new StringBuilder(config.getWfHost().concat(config.getWfTransitionPath()));
         Object optional = repository.fetchResult(url, workflowReq);
         response = mapper.convertValue(optional, ProcessInstanceResponse.class);
         return response.getProcessInstances().get(0).getState();
