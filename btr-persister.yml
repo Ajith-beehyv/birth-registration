@@ -49,7 +49,7 @@ serviceMaps:
 
             - jsonPath: $.BirthRegistrationApplications.*.address.applicationNumber
 
-        - query: INSERT INTO eg_bt_address(tenantid, latitude, longitude, buildingname, addressid, addressnumber, addressline1, addressline2, city, pincode, detail, createdby, lastmodifiedby, createdtime, lastmodifiedtime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        - query: INSERT INTO eg_bt_address(tenantid, latitude, longitude, buildingname, addressid, addressnumber, addressline1, addressline2, city, pincode, detail) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
           basePath: BirthRegistrationApplications.*
           jsonMaps:
             - jsonPath: $.BirthRegistrationApplications.*.address.applicantAddress.tenantId

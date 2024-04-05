@@ -68,7 +68,7 @@ public class UserService {
         userSearchRequest.setTenantId(stateTenantId);
 
         if(StringUtils.isEmpty(user.getName()) && StringUtils.isEmpty(user.getUserName())
-                && StringUtils.isEmpty(user.getMobileNumber())) {
+                && StringUtils.isEmpty(user.getMobileNumber()) && StringUtils.isEmpty(user.getUuid())) {
             return null;
         }
 
