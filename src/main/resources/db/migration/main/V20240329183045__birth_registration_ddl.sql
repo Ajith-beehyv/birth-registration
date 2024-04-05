@@ -7,7 +7,7 @@ CREATE TABLE eg_bt_registration(
   fatherid varchar(64),
   motherid varchar(64),
   doctorname varchar(64),
-  hospitalmame varchar(64),
+  hospitalname varchar(64),
   placeofbirth varchar(64),
   timeofbirth bigint,
   createdby varchar(64),
@@ -19,7 +19,7 @@ CREATE TABLE eg_bt_registration(
  
 CREATE TABLE eg_btr_app_address(
    id varchar(64) PRIMARY KEY,
-   tenantId varchar(64),
+   tenantid varchar(64),
    applicationnumber varchar(64),
    CONSTRAINT fk_eg_btr_app_address FOREIGN KEY (applicationnumber) REFERENCES eg_bt_registration(applicationnumber)
     ON UPDATE CASCADE
