@@ -15,7 +15,7 @@ public class BirthApplicationQueryBuilder {
             "reg.applicationnumber AS registration_application_number, " +
             "reg.babyfirstname AS baby_first_name, reg.babylastname AS baby_last_name, " +
             "reg.fatherid AS father_id, reg.motherid AS mother_id, " +
-            "reg.doctorname AS doctor_name, reg.hospitalmame AS hospital_name, " +
+            "reg.doctorname AS doctor_name, reg.hospitalname AS hospital_name, " +
             "reg.placeofbirth AS place_of_birth, reg.timeofbirth AS time_of_birth, " +
             "reg.createdby AS registration_created_by, reg.lastmodifiedby AS registration_last_modified_by, " +
             "reg.createdtime AS registration_created_time, reg.lastmodifiedtime AS registration_last_modified_time, ";
@@ -27,9 +27,7 @@ public class BirthApplicationQueryBuilder {
             "addr.buildingname AS address_building_name, addr.addressid AS address_id, " +
             "addr.addressnumber AS address_number, addr.addressline1 AS address_line1, " +
             "addr.addressline2 AS address_line2, addr.city AS address_city, " +
-            "addr.pincode AS address_pincode, addr.detail AS address_detail, " +
-            "addr.createdby AS address_created_by, addr.lastmodifiedby AS address_last_modified_by, " +
-            "addr.createdtime AS address_created_time, addr.lastmodifiedtime AS address_last_modified_time ";
+            "addr.pincode AS address_pincode, addr.detail AS address_detail ";
 
     private static final String FROM_TABLES = "FROM eg_bt_registration reg " +
             "LEFT JOIN eg_btr_app_address appAddr ON reg.applicationNumber = appAddr.applicationNumber " +

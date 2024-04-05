@@ -3,19 +3,16 @@ package digit.web.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import digit.service.BirthRegistrationService;
 import digit.util.ResponseInfoFactory;
-import digit.web.models.BirthApplicationSearchCriteria;
-import digit.web.models.BirthRegistrationApplication;
-import digit.web.models.BirthRegistrationRequest;
-import digit.web.models.BirthRegistrationResponse;
+import digit.web.models.*;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.egov.common.contract.request.RequestInfo;
 import org.egov.common.contract.response.ResponseInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -51,9 +48,10 @@ public class BirthApiController {
     }
 
     @RequestMapping(value = "/birth/registration/v1/_search", method = RequestMethod.POST)
-    public ResponseEntity<BirthRegistrationRequest> birthRegistrationV1SearchPost(@Valid RequestInfo requestInfo, @Parameter(in = ParameterIn.DEFAULT, description = "Parameter to carry Request metadata in the request body", schema = @Schema()) @Valid @RequestBody BirthApplicationSearchCriteria body) {
-        List<BirthRegistrationApplication> applications = birthRegistrationService.searchBtApplications(requestInfo, body);
-        BirthRegistrationRequest response = BirthRegistrationRequest.builder().birthRegistrationApplications(applications).requestInfo(requestInfo).build();
+    public ResponseEntity<BirthRegistrationResponse> birthRegistrationV1SearchPost(@Parameter(in = ParameterIn.DEFAULT, description = "Parameter to carry Request metadata in the request body", schema = @Schema()) @RequestBody RequestInfoWrapper requestInfoWrapper, @Valid @ModelAttribute BirthApplicationSearchCriteria birthApplicationSearchCriteria) {
+        List<BirthRegistrationApplication> applications = birthRegistrationService.searchBtApplications(requestInfoWrapper.getRequestInfo(), birthApplicationSearchCriteria);
+        ResponseInfo responseInfo = responseInfoFactory.createResponseInfoFromRequestInfo(requestInfoWrapper.getRequestInfo(), true);
+        BirthRegistrationResponse response = BirthRegistrationResponse.builder().birthRegistrationApplications(applications).responseInfo(responseInfo).build();
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

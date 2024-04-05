@@ -38,11 +38,7 @@ CREATE TABLE eg_bt_address(
    addressline2 varchar(256),
    city varchar(64),
    pincode varchar(64),
-   detail varchar(256),
-   createdby varchar(64),
-   lastmodifiedby varchar(64),
-   createdtime bigint,
-   lastmodifiedtime bigint,
+   detail varchar(256)
    CONSTRAINT fk_eg_bt_address FOREIGN KEY (addressid) REFERENCES eg_btr_app_address(id)
      ON UPDATE CASCADE
      ON DELETE CASCADE

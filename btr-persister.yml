@@ -74,14 +74,6 @@ serviceMaps:
 
             - jsonPath: $.BirthRegistrationApplications.*.address.applicantAddress.detail
 
-            - jsonPath: $.BirthRegistrationApplications.*.address.applicantAddress.createdBy
-
-            - jsonPath: $.BirthRegistrationApplications.*.address.applicantAddress.lastModifiedBy
-
-            - jsonPath: $.BirthRegistrationApplications.*.address.applicantAddress.createdTime
-
-            - jsonPath: $.BirthRegistrationApplications.*.address.applicantAddress.lastModifiedTime
-
     - version: 1.0
       description: Update birth registration applications in table
       fromTopic: update-bt-application
