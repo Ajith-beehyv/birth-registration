@@ -45,9 +45,13 @@ public class BirthApplicationEnrichment {
     }
 
     public void enrichBirthApplicationUponUpdate(BirthRegistrationRequest birthRegistrationRequest) {
-        // Enrich lastModifiedTime and lastModifiedBy in case of update
-        birthRegistrationRequest.getBirthRegistrationApplications().get(0).getAuditDetails().setLastModifiedTime(System.currentTimeMillis());
-        birthRegistrationRequest.getBirthRegistrationApplications().get(0).getAuditDetails().setLastModifiedBy(birthRegistrationRequest.getRequestInfo().getUserInfo().getUuid());
+        long currentTimeMillis = System.currentTimeMillis();
+        String lastModifiedBy = birthRegistrationRequest.getRequestInfo().getUserInfo().getUuid();
+
+        for (BirthRegistrationApplication application : birthRegistrationRequest.getBirthRegistrationApplications()) {
+            application.getAuditDetails().setLastModifiedTime(currentTimeMillis);
+            application.getAuditDetails().setLastModifiedBy(lastModifiedBy);
+        }
     }
 
     public void enrichFatherUserOnSearch(BirthRegistrationApplication application) {
@@ -57,7 +61,11 @@ public class BirthApplicationEnrichment {
         log.info(fatherUser.toString());
         User father = User.builder()
                 .uuid(fatherUser.getUuid())
+                .tenantId(fatherUser.getTenantId())
                 .name(fatherUser.getName())
+                .userName(fatherUser.getUserName())
+                .mobileNumber(fatherUser.getMobileNumber())
+                .emailId(fatherUser.getEmailId())
                 .type(fatherUser.getType())
                 .roles(fatherUser.getRoles()).build();
         application.setFather(father);
@@ -70,7 +78,11 @@ public class BirthApplicationEnrichment {
         log.info(motherUser.toString());
         User mother = User.builder()
                 .uuid(motherUser.getUuid())
+                .tenantId(motherUser.getTenantId())
                 .name(motherUser.getName())
+                .userName(motherUser.getUserName())
+                .mobileNumber(motherUser.getMobileNumber())
+                .emailId(motherUser.getEmailId())
                 .type(motherUser.getType())
                 .roles(motherUser.getRoles()).build();
         application.setMother(mother);

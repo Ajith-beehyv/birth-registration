@@ -48,11 +48,7 @@ public class UserService {
         if (userDetailResponse != null && !userDetailResponse.getUser().isEmpty()) {
             User userFromSearch = userDetailResponse.getUser().get(0);
             log.info(userFromSearch.toString());
-            if(!user.getUserName().equalsIgnoreCase(userFromSearch.getUserName())){
-                userServiceResponse = updateUser(requestInfo,user,userFromSearch);
-            } else {
-                userServiceResponse = userDetailResponse.getUser().get(0);
-            }
+            userServiceResponse = userDetailResponse.getUser().get(0);
         } else {
             userServiceResponse = createUser(requestInfo, user);
         }
