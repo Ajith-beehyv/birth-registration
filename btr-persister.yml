@@ -40,7 +40,7 @@ serviceMaps:
 
             - jsonPath: $.BirthRegistrationApplications.*.auditDetails.lastModifiedTime
 
-        - query: INSERT INTO eg_bt_address(id, tenantid, applicationnumber) VALUES (?, ?, ?);
+        - query: INSERT INTO eg_btr_app_address(id, tenantid, applicationnumber) VALUES (?, ?, ?);
           basePath: BirthRegistrationApplications.*
           jsonMaps:
             - jsonPath: $.BirthRegistrationApplications.*.address.id
