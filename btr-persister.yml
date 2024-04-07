@@ -79,7 +79,7 @@ serviceMaps:
       fromTopic: update-bt-application
       isTransaction: true
       queryMaps:
-        - query: UPDATE eg_bt_registration SET tenantid = ?,babyFirstName = ?, timeOfBirth = ? WHERE id=?;
+        - query: UPDATE eg_bt_registration SET tenantid = ?,babyFirstName = ?, timeOfBirth = ?, lastmodifiedby = ?, lastmodifiedtime = ? WHERE id=?;
           basePath: BirthRegistrationApplications.*
           jsonMaps:
             - jsonPath: $.BirthRegistrationApplications.*.tenantId
@@ -87,5 +87,9 @@ serviceMaps:
             - jsonPath: $.BirthRegistrationApplications.*.babyFirstName
 
             - jsonPath: $.BirthRegistrationApplications.*.timeOfBirth
+
+            - jsonPath: $.BirthRegistrationApplications.*.auditDetails.lastModifiedBy
+
+            - jsonPath: $.BirthRegistrationApplications.*.auditDetails.lastModifiedTime
 
             - jsonPath: $.BirthRegistrationApplications.*.id

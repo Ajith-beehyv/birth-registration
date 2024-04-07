@@ -88,6 +88,11 @@ public class BirthRegistrationService {
         BirthRegistrationApplication existingApplication = validator.validateApplicationExistence(birthRegistrationRequest.getBirthRegistrationApplications().get(0));
         existingApplication.setWorkflow(birthRegistrationRequest.getBirthRegistrationApplications().get(0).getWorkflow());
         log.info(existingApplication.toString());
+
+        // update application with new data
+        existingApplication.setTenantId(birthRegistrationRequest.getBirthRegistrationApplications().get(0).getTenantId());
+        existingApplication.setBabyFirstName(birthRegistrationRequest.getBirthRegistrationApplications().get(0).getBabyFirstName());
+        existingApplication.setTimeOfBirth(birthRegistrationRequest.getBirthRegistrationApplications().get(0).getTimeOfBirth());
         birthRegistrationRequest.setBirthRegistrationApplications(Collections.singletonList(existingApplication));
 
         // Enrich application upon update
