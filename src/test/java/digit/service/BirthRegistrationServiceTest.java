@@ -4,9 +4,7 @@ import digit.enrichment.BirthApplicationEnrichment;
 import digit.kafka.Producer;
 import digit.repository.BirthRegistrationRepository;
 import digit.validator.BirthApplicationValidator;
-import digit.web.models.BirthApplicationSearchCriteria;
-import digit.web.models.BirthRegistrationApplication;
-import digit.web.models.BirthRegistrationRequest;
+import digit.web.models.*;
 import org.egov.common.contract.request.RequestInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,6 +37,9 @@ public class BirthRegistrationServiceTest {
     @Mock
     private Producer producer;
 
+    @Mock
+    private WorkFlowService workFlowService;
+
     @InjectMocks
     private BirthRegistrationService birthRegistrationService;
 
@@ -48,24 +50,31 @@ public class BirthRegistrationServiceTest {
 
     @Test
     public void testRegisterBtRequest() {
-        // Setup
         BirthRegistrationRequest request = new BirthRegistrationRequest();
-        when(birthRegistrationRepository.getApplications(any())).thenReturn(Collections.emptyList());
+        BirthRegistrationApplication application = new BirthRegistrationApplication();
+        application.setId("123");
+        List<BirthRegistrationApplication> applications = new ArrayList<>(Collections.singletonList(application));
+        request.setBirthRegistrationApplications(applications);
 
-        // Invoke
+        doNothing().when(validator).validateBirthApplication(any());
+        doNothing().when(userService).callUserService(any());
+        doNothing().when(workFlowService).updateWorkflowStatus(any());
+        doNothing().when(producer).push(anyString(), any());
+
         List<BirthRegistrationApplication> result = birthRegistrationService.registerBtRequest(request);
 
-        // Verify
-        assertEquals(0, result.size());
-        verify(validator, times(1)).validateBirthApplication(request);
-        verify(enrichmentUtil, times(1)).enrichBirthApplication(request);
-        verify(userService, times(1)).callUserService(request);
-        verify(producer, times(1)).push(anyString(), eq(request));
+        verify(enrichmentUtil).enrichBirthApplication(request);
+        verify(validator).validateBirthApplication(request);
+        verify(userService).callUserService(request);
+        verify(workFlowService).updateWorkflowStatus(request);
+        verify(producer).push("save-bt-application", request);
+
+        assertEquals(1, result.size());
+        assertEquals("123", result.get(0).getId());
     }
 
     @Test
     public void testSearchBtApplications() {
-        // Setup
         RequestInfo requestInfo = new RequestInfo();
         BirthApplicationSearchCriteria searchCriteria = new BirthApplicationSearchCriteria();
         when(birthRegistrationRepository.getApplications(any())).thenReturn(Collections.emptyList());
@@ -80,26 +89,23 @@ public class BirthRegistrationServiceTest {
 
     @Test
     public void testUpdateBtApplication() {
-        // Setup
         BirthRegistrationRequest request = new BirthRegistrationRequest();
         BirthRegistrationApplication application = new BirthRegistrationApplication();
-        request.setBirthRegistrationApplications(Collections.singletonList(application));
+        application.setId("123");
+        List<BirthRegistrationApplication> applications = Collections.singletonList(application);
+        request.setBirthRegistrationApplications(applications);
 
-        application.setTenantId("br");
-        application.setBabyFirstName("Rahul");
-        application.setTimeOfBirth(1234567);
+        when(validator.validateApplicationExistence(application)).thenReturn(application);
+        //hen(producer.push(anyString(), any())).thenReturn(true);
 
+        List<BirthRegistrationApplication> result = birthRegistrationService.updateBtApplication(request);
 
-        // Invoke
-        BirthRegistrationApplication result = birthRegistrationService.updateBtApplication(request).get(0);
+        verify(validator).validateApplicationExistence(application);
+        verify(enrichmentUtil).enrichBirthApplicationUponUpdate(request);
+        verify(workFlowService).updateWorkflowStatus(request);
+        verify(producer).push("update-bt-application", request);
 
-        // Verify
-        assertEquals(application, result);
-        verify(validator, times(1)).validateApplicationExistence(application);
-        verify(enrichmentUtil, times(1)).enrichBirthApplicationUponUpdate(request);
-        verify(producer, times(1)).push(anyString(), eq(request));
-        assertEquals("br", result.getTenantId());
-        assertEquals("Rahul", result.getBabyFirstName());
-        assertEquals(1234567, result.getTimeOfBirth());
+        assertEquals(1, result.size());
+        assertEquals("123", result.get(0).getId());
     }
 }

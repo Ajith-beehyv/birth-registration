@@ -33,7 +33,7 @@ public class BirthApplicationQueryBuilder {
             "LEFT JOIN eg_btr_app_address appAddr ON reg.applicationNumber = appAddr.applicationNumber " +
             "LEFT JOIN eg_bt_address addr ON appAddr.id = addr.addressId";
 
-    private static final String ORDER_BY_CREATED_TIME = " ORDER BY reg.createdTime DESC ";
+    private static final String ORDER_BY_CREATED_TIME = " ORDER BY reg.createdtime DESC ";
 
     public String getBirthApplicationSearchQuery(BirthApplicationSearchCriteria criteria, List<Object> preparedStmtList){
         StringBuilder query = new StringBuilder(BASE_QUERY);

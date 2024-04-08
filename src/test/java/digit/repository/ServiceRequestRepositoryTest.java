@@ -1,11 +1,13 @@
 package digit.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.egov.tracer.model.ServiceCallException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -58,10 +60,10 @@ public class ServiceRequestRepositoryTest {
         Object request = new Object();
 
         when(restTemplate.postForObject(anyString(), any(), eq(Map.class)))
-                .thenThrow(new HttpClientErrorException(null, "Client error message"));
+                .thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Client error message"));
 
         // Act & Assert
-        assertThrows(HttpClientErrorException.class, () -> repository.fetchResult(uri, request));
+        assertThrows(ServiceCallException.class, () -> repository.fetchResult(uri, request));
         verify(restTemplate, times(1)).postForObject(anyString(), any(), eq(Map.class));
         verifyNoMoreInteractions(restTemplate);
     }

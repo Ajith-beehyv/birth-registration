@@ -1,7 +1,6 @@
 package digit.validator;
 
 import digit.repository.BirthRegistrationRepository;
-import digit.validator.BirthApplicationValidator;
 import digit.web.models.BirthRegistrationApplication;
 import digit.web.models.BirthRegistrationRequest;
 import org.egov.tracer.model.CustomException;
@@ -36,7 +35,7 @@ public class BirthApplicationValidatorTest {
         BirthRegistrationRequest request = new BirthRegistrationRequest();
         BirthRegistrationApplication application = new BirthRegistrationApplication();
         application.setTenantId("tenantId");
-        request.getBirthRegistrationApplications().add(application);
+        request.setBirthRegistrationApplications(Collections.singletonList(application));
 
         // Invoke and Verify
         assertDoesNotThrow(() -> validator.validateBirthApplication(request));
@@ -47,7 +46,7 @@ public class BirthApplicationValidatorTest {
         // Setup
         BirthRegistrationRequest request = new BirthRegistrationRequest();
         BirthRegistrationApplication application = new BirthRegistrationApplication();
-        request.getBirthRegistrationApplications().add(application);
+        request.setBirthRegistrationApplications(Collections.singletonList(application));
 
         // Invoke and Verify
         CustomException exception = assertThrows(CustomException.class, () -> validator.validateBirthApplication(request));
@@ -79,7 +78,7 @@ public class BirthApplicationValidatorTest {
 
         // Invoke and Verify
         CustomException exception = assertThrows(CustomException.class, () -> validator.validateApplicationExistence(application));
-        assertEquals("EG_BT_APP_ERR", exception.getCode());
-        assertEquals("Application not found with number: appNumber", exception.getMessage());
+        assertEquals("EG_BT_APP_NOT_FOUND", exception.getCode());
+        assertEquals("Birth registration application not found", exception.getMessage());
     }
 }

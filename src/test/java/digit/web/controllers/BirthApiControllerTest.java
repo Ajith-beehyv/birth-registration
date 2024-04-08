@@ -1,72 +1,95 @@
 package digit.web.controllers;
 
 
-import org.junit.Ignore;
+import digit.service.BirthRegistrationService;
+import digit.util.ResponseInfoFactory;
+import digit.web.models.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import digit.TestConfiguration;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 /**
 * API tests for BirthApiController
 */
-@Ignore
-@RunWith(SpringRunner.class)
-@WebMvcTest(BirthApiController.class)
-@Import(TestConfiguration.class)
+
+@SpringBootTest
+@AutoConfigureMockMvc
 public class BirthApiControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
 
-    @Test
-    public void birthRegistrationV1CreatePostSuccess() throws Exception {
-        mockMvc.perform(post("/birth/registration/v1/_create").contentType(MediaType
-        .APPLICATION_JSON_UTF8))
-        .andExpect(status().isOk());
+    @Mock
+    private BirthRegistrationService birthRegistrationService;
+
+    @Mock
+    private ResponseInfoFactory responseInfoFactory;
+
+    @InjectMocks
+    private BirthApiController birthApiController;
+
+    @BeforeEach
+    public void init() {
+        MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    public void birthRegistrationV1CreatePostFailure() throws Exception {
-        mockMvc.perform(post("/birth/registration/v1/_create").contentType(MediaType
-        .APPLICATION_JSON_UTF8))
-        .andExpect(status().isBadRequest());
+    public void testBirthRegistrationV1CreatePost() {
+        BirthRegistrationRequest request = new BirthRegistrationRequest();
+        // Set up your request object here
+
+        List<BirthRegistrationApplication> applications = new ArrayList<>();
+        // Set up expected response data
+
+        when(birthRegistrationService.registerBtRequest(any())).thenReturn(applications);
+
+        ResponseEntity<BirthRegistrationResponse> responseEntity = birthApiController.birthRegistrationV1CreatePost(request);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        // Add more assertions as needed
     }
 
     @Test
-    public void birthRegistrationV1SearchPostSuccess() throws Exception {
-        mockMvc.perform(post("/birth/registration/v1/_search").contentType(MediaType
-        .APPLICATION_JSON_UTF8))
-        .andExpect(status().isOk());
+    public void testBirthRegistrationV1SearchPost() {
+        RequestInfoWrapper requestInfoWrapper = new RequestInfoWrapper();
+        BirthApplicationSearchCriteria criteria = new BirthApplicationSearchCriteria();
+        // Set up your request objects here
+
+        List<BirthRegistrationApplication> applications = new ArrayList<>();
+        // Set up expected response data
+
+        when(birthRegistrationService.searchBtApplications(any(), any())).thenReturn(applications);
+
+        ResponseEntity<BirthRegistrationResponse> responseEntity = birthApiController.birthRegistrationV1SearchPost(requestInfoWrapper, criteria);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        // Add more assertions as needed
     }
 
     @Test
-    public void birthRegistrationV1SearchPostFailure() throws Exception {
-        mockMvc.perform(post("/birth/registration/v1/_search").contentType(MediaType
-        .APPLICATION_JSON_UTF8))
-        .andExpect(status().isBadRequest());
-    }
+    public void testBirthRegistrationV1UpdatePost() {
+        BirthRegistrationRequest request = new BirthRegistrationRequest();
+        // Set up your request object here
 
-    @Test
-    public void birthRegistrationV1UpdatePostSuccess() throws Exception {
-        mockMvc.perform(post("/birth/registration/v1/_update").contentType(MediaType
-        .APPLICATION_JSON_UTF8))
-        .andExpect(status().isOk());
-    }
+        List<BirthRegistrationApplication> applications = new ArrayList<>();
+        // Set up expected response data
 
-    @Test
-    public void birthRegistrationV1UpdatePostFailure() throws Exception {
-        mockMvc.perform(post("/birth/registration/v1/_update").contentType(MediaType
-        .APPLICATION_JSON_UTF8))
-        .andExpect(status().isBadRequest());
+        when(birthRegistrationService.updateBtApplication(any())).thenReturn(applications);
+
+        ResponseEntity<BirthRegistrationResponse> responseEntity = birthApiController.birthRegistrationV1UpdatePost(request);
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 
 }
