@@ -99,20 +99,6 @@ public class UserService {
         return userDetailResponse.getUser().get(0);
     }
 
-    private User updateUser(RequestInfo requestInfo,User user,User userFromSearch) {
-
-        userFromSearch.setName(user.getName());
-        userFromSearch.setActive(true);
-
-        StringBuilder uri = new StringBuilder(config.getUserHost())
-                .append(config.getUserContextPath())
-                .append(config.getUserUpdateEndpoint());
-
-        UserDetailResponse userDetailResponse = userUtil.userCall(new CreateUserRequest(requestInfo, userFromSearch), uri);
-
-        return userDetailResponse.getUser().get(0);
-    }
-
     public String getStateLevelTenant(String tenantId){
         return userUtil.getStateLevelTenant(tenantId);
     }
