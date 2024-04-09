@@ -95,17 +95,6 @@ public class WorkFlowService {
         return null;
     }
 
-    private StringBuilder getSearchURLWithParams(String tenantId, String businessService) {
-
-        StringBuilder url = new StringBuilder(config.getWfHost());
-        url.append(config.getWfBusinessServiceSearchPath());
-        url.append("?tenantId=");
-        url.append(tenantId);
-        url.append("&businessServices=");
-        url.append(businessService);
-        return url;
-    }
-
     private StringBuilder getSearchURLForProcessInstanceWithParams(String tenantId, String businessService) {
         StringBuilder url = new StringBuilder(config.getWfHost());
         url.append(config.getWfProcessInstanceSearchPath());
